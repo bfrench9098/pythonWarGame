@@ -4,6 +4,7 @@
 
 import random
 
+
 # The Deck class is used to generate the initial deck of cards and give each card a
 #   "value". The value will be used later when cards are being compared from draw
 #   to draw.
@@ -11,23 +12,22 @@ import random
 # This class also holds utility functions for cutting the initial deck etc.
 #
 class Deck:
-    
     SUITES = 'H D S C'.split()
     RANKS = '2 3 4 5 6 7 8 9 10 J Q K A'.split()
-    
+
     DECK = []
-    
+
     def __init__(self) -> None:
         self.generate_deck()
-        
+
         card_count = len(self.DECK)
         print("Have generated a new deck of {} cards.".format(card_count))
-        #print(self.DECK)
+        # print(self.DECK)
 
         self.shuffle_deck()
         print("Deck has been shuffled.")
-        #print(self.DECK)
-        
+        # print(self.DECK)
+
     def generate_deck(self):
         suite_val = 0
         rank_val = 0
@@ -45,9 +45,10 @@ class Deck:
                 card = {card_type: rank_val}
 
                 self.DECK.append(card)
-        
+
     def shuffle_deck(self):
         random.shuffle(self.DECK)
+
 
 # The Player class is used to hold player related information as well as the player's
 #   cards after retrieving from the initial deck of cards generated in the Deck class.
@@ -91,7 +92,7 @@ class Player:
 
     # Draw one card from the top of player deck
     def draw_one(self):
-        return  self.player_deck.pop(0)
+        return self.player_deck.pop(0)
 
     def draw_three(self):
         three_cards = []
@@ -107,9 +108,11 @@ class Player:
     def append_cards(self, cards):
         self.player_deck.append(cards)
 
+
 # Do a WAR
 def do_war():
     pass
+
 
 # Check the player decks to see if anyone has run out of cards. When either the computer
 #   or the opponent run out of cards the game is over.
@@ -127,6 +130,7 @@ def game_complete():
         return True
     else:
         return False
+
 
 def do_hand():
     computer_card = []
@@ -161,13 +165,14 @@ def do_hand():
         opponent.append_cards(computer_card)
         opponent.append_cards(opponent_card)
 
+
 # The actual game code starts here
 #
 
 # Generate the initial deck of cards and shuffle the deck
 Deck()
 
-#globals
+# globals
 keep_going = True
 
 # Set up the computer player
@@ -187,6 +192,3 @@ while keep_going is True:
     do_hand()
     if game_complete():
         keep_going = False
-
-
-
