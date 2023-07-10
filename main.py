@@ -63,6 +63,10 @@ class Player:
         self.player_deck = []
         self.player_wins = 0
 
+    # Return the player name attribute
+    def get_name(self):
+        return self.name
+
     # draw 26 cards from Deck.DECK
     def draw_cards(self):
         self.player_deck.clear()
@@ -87,10 +91,7 @@ class Player:
 
     # Draw one card from the top of player deck
     def draw_one(self):
-        top_card = []
-        top_card.append = self.player_deck.pop(0)
-
-        return top_card
+        return  self.player_deck.pop(0)
 
     def draw_three(self):
         three_cards = []
@@ -106,14 +107,57 @@ class Player:
     def append_cards(self, cards):
         self.player_deck.append(cards)
 
-def do_hand:
+# Do a WAR
+def do_war():
+    pass
+
+# Check the player decks to see if anyone has run out of cards. When either the computer
+#   or the opponent run out of cards the game is over.
+def game_complete():
+    computer_remaining_cards = computer.get_remaining_cards()
+    opponent_remaining_cards = opponent.get_remaining_cards()
+
+    if computer_remaining_cards == 0:
+        print("{} Wins the Game!".format(opponent.get_name()))
+
+    if opponent_remaining_cards == 0:
+        print("Computer Wins the Game!")
+
+    if computer_remaining_cards == 0 or opponent_remaining_cards == 0:
+        return True
+    else:
+        return False
+
+def do_hand():
     computer_card = []
     opponent_card = []
 
     computer_card = computer.draw_one()
     opponent_card = opponent.draw_one()
 
+    keys = list(computer_card.keys())
+    computer_card_key = keys[0]
+    values = list(computer_card.values())
+    computer_card_val = values[0]
 
+    keys = list(opponent_card.keys())
+    opponent_card_key = keys[0]
+    values = list(opponent_card.values())
+    opponent_card_val = values[0]
+
+    print("Computer Drew a: {}\t\t{} Drew a: {}\n".format(computer_card_key, opponent.get_name(), opponent_card_key))
+
+    if computer_card_val == opponent_card_val:
+        print("W  A  R  !\n")
+        do_war()
+    elif computer_card_val > opponent_card_val:
+        print("Computer Wins the Hand!\n")
+        computer.append_cards(computer_card)
+        computer.append_cards(opponent_card)
+    else:
+        print("{} Wins the Hand!\n".format(opponent.get_name()))
+        opponent.append_cards(computer_card)
+        opponent.append_cards(opponent_card)
 
 # The actual game code starts here
 #
@@ -121,17 +165,26 @@ def do_hand:
 # Generate the initial deck of cards and shuffle the deck
 Deck()
 
-# Set-up the computer player
+#globals
+keep_going = True
+
+# Set up the computer player
 computer = Player("Computer", "odd")
 computer.draw_cards()
 
 print("Welcome to WAR!!\n")
 
-# Set-up the human opponent
+# Set up the human opponent
 player_name = input("Enter Your Name:  ")
 opponent = Player(player_name, "even")
 opponent.draw_cards()
 
-print("S T A R T I N G    G A M E\n")
+print("\nS T A R T I N G    G A M E\n")
+
+while keep_going is True:
+    do_hand()
+    if game_complete():
+        keep_going = False
+
 
 
