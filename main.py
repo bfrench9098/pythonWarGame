@@ -4,8 +4,12 @@
 
 import random
 
-#import main
-
+# The Deck class is used to generate the initial deck of cards and give each card a
+#   "value". The value will be used later when cards are being compared from draw
+#   to draw.
+#
+# This class also holds utility functions for cutting the initial deck etc.
+#
 class Deck:
     
     SUITES = 'H D S C'.split()
@@ -45,6 +49,12 @@ class Deck:
     def shuffle_deck(self):
         random.shuffle(self.DECK)
 
+# The Player class is used to hold player related information as well as the player's
+#   cards after retrieving from the initial deck of cards generated in the Deck class.
+#
+# This class will also be used to hold some statistical items like number of hands won,
+#   number of wins in a rwo, etc.
+#
 class Player:
     def __init__(self, name, draw):
         self.name = name
@@ -65,14 +75,20 @@ class Player:
                 if i % 2 != 0:
                     self.player_deck.append(card)
 
+# The actual game code starts here
+#
+
+# Generate the initial deck of cards and shuffle the deck
 Deck()
 
+# Set-up the computer player
 computer = Player("Computer", "odd")
 computer.draw_cards()
 
 print("Welcome to WAR!!\n")
-player_name = input("Enter Your Name:  ")
 
+# Set-up the human opponent
+player_name = input("Enter Your Name:  ")
 opponent = Player(player_name, "even")
 opponent.draw_cards()
 
