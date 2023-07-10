@@ -152,10 +152,12 @@ def do_hand():
         do_war()
     elif computer_card_val > opponent_card_val:
         print("Computer Wins the Hand!\n")
+        computer.add_player_win()
         computer.append_cards(computer_card)
         computer.append_cards(opponent_card)
     else:
         print("{} Wins the Hand!\n".format(opponent.get_name()))
+        opponent.add_player_win()
         opponent.append_cards(computer_card)
         opponent.append_cards(opponent_card)
 
