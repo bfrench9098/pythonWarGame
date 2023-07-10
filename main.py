@@ -56,11 +56,14 @@ class Deck:
 #   number of wins in a rwo, etc.
 #
 class Player:
+    # init method
     def __init__(self, name, draw):
         self.name = name
         self.draw = draw
         self.player_deck = []
+        self.player_wins = 0
 
+    # draw 26 cards from Deck.DECK
     def draw_cards(self):
         self.player_deck.clear()
 
@@ -74,6 +77,43 @@ class Player:
             elif self.draw == "odd":
                 if i % 2 != 0:
                     self.player_deck.append(card)
+
+    # Add 1 to player wins
+    def add_player_win(self):
+        self.player_wins = self.player_wins + 1
+
+    def get_remaining_cards(self):
+        return len(self.player_deck)
+
+    # Draw one card from the top of player deck
+    def draw_one(self):
+        top_card = []
+        top_card.append = self.player_deck.pop(0)
+
+        return top_card
+
+    def draw_three(self):
+        three_cards = []
+        i = 0
+
+        while i < 3:
+            three_cards.append = self.player_deck.pop(0)
+            i = i + 1
+
+        return three_cards
+
+    # Append won cards to bottom of player deck
+    def append_cards(self, cards):
+        self.player_deck.append(cards)
+
+def do_hand:
+    computer_card = []
+    opponent_card = []
+
+    computer_card = computer.draw_one()
+    opponent_card = opponent.draw_one()
+
+
 
 # The actual game code starts here
 #
@@ -93,3 +133,5 @@ opponent = Player(player_name, "even")
 opponent.draw_cards()
 
 print("S T A R T I N G    G A M E\n")
+
+
