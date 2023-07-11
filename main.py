@@ -104,7 +104,7 @@ class Player:
         i = 0
 
         while i < 3:
-            three_cards.append = self.player_deck.pop(0)
+            three_cards.append(self.draw_one())
             i = i + 1
 
         return three_cards
@@ -117,7 +117,7 @@ class Player:
         i = 0
 
         while i < remaining_count:
-            remaining_cards.append = self.player_deck.pop(0)
+            remaining_cards.append(self.draw_one())
             i = i + 1
 
         return remaining_cards
@@ -153,7 +153,7 @@ def do_war(computer_card, opponent_card, existing_war_chest = []):
         computer.add_war_win()
 
         print("{} does not have enough cards to continue. Computer wins the WAR!".format(opponent.get_name()))
-    else
+    else:
         war_chest.append(computer_card)
         war_chest.append(opponent_card)
 
@@ -238,7 +238,7 @@ def do_hand():
 
     if computer_card_val == opponent_card_val:
         print("W  A  R  !\n")
-        do_war()
+        do_war(computer_card, opponent_card)
     elif computer_card_val > opponent_card_val:
         print("Computer Wins the Hand!\n")
         computer.add_player_win()
