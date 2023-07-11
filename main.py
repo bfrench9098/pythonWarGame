@@ -124,13 +124,16 @@ class Player:
 
 
     # Append won cards to bottom of player deck
-    def append_cards(self, cards):
-        self.player_deck.append(cards)
+    def append_card(self, card):
+        self.player_deck.append(card)
 
 
 # Do a WAR (recursive method)
 def do_war(computer_card, opponent_card, existing_war_chest = []):
-    war_chest = [] = existing_war_chest
+    war_chest = []
+
+    for card in existing_war_chest:
+         war_chest.append(card)
 
     # Continue the WAR if each player has enough cards.
     #   Otherwise, the cards of the player without
@@ -138,21 +141,27 @@ def do_war(computer_card, opponent_card, existing_war_chest = []):
     #   player. This will end the game when the
     #   game complete check is done
     if computer.get_remaining_cards() < 4:
+        print("Computer does not have enough cards to continue({}). {} wins the WAR!\n".format(computer.get_remaining_cards(), opponent.get_name()))
+        opponent.append_card(computer_card)
+        opponent.append_card(opponent_card)
         remaining_cards = computer.draw_remaining()
-        war_chest.append(remaining_cards)
-        opponent.append_cards(war_chest)
+        for card in remaining_cards:
+            war_chest.append(card)
+        for card in war_chest:
+            opponent.append_card(card)
         opponent.add_player_win()
         opponent.add_war_win()
-
-        print("Computer does not have enough cards to continue. {} wins the WAR!".format(opponent.get_name()))
     elif opponent.get_remaining_cards() < 4:
+        print("{} does not have enough cards to continue({}). Computer wins the WAR!\n".format( opponent.get_name(), opponent.get_remaining_cards()))
+        computer.append_card(computer_card)
+        computer.append_card(opponent_card)
         remaining_cards = opponent.draw_remaining()
-        war_chest.append(remaining_cards)
-        computer.append_cards(war_chest)
+        for card in remaining_cards:
+            war_chest.append(card)
+        for card in war_chest:
+            computer.append_card(card)
         computer.add_player_win()
         computer.add_war_win()
-
-        print("{} does not have enough cards to continue. Computer wins the WAR!".format(opponent.get_name()))
     else:
         war_chest.append(computer_card)
         war_chest.append(opponent_card)
@@ -160,11 +169,10 @@ def do_war(computer_card, opponent_card, existing_war_chest = []):
         computer_draw_three = computer.draw_three()
         opponent_draw_three = opponent.draw_three()
 
-        war_chest.append(computer_draw_three)
-        war_chest.append(opponent_draw_three)
-
-        computer_war_card = []
-        opponent_war_card = []
+        for card in computer_draw_three:
+            war_chest.append(card)
+        for card in opponent_draw_three:
+                war_chest.append(card)
 
         computer_war_card = computer.draw_one()
         opponent_war_card = opponent.draw_one()
@@ -185,19 +193,21 @@ def do_war(computer_card, opponent_card, existing_war_chest = []):
             print("W  A  R  !\n")
             do_war(computer_war_card, opponent_war_card, war_chest)
         elif computer_war_card_val > opponent_war_card_val:
-            print("Computer Wins the Hand!\n")
+            print("Computer Wins the WAR!\n")
             computer.add_player_win()
             computer.add_war_win()
-            computer.append_cards(computer_war_card)
-            computer.appemd_cards(opponent_war_card)
-            computer.append_cards(war_chest)
+            computer.append_card(computer_war_card)
+            computer.append_card(opponent_war_card)
+            for card in war_chest:
+                computer.append_card(card)
         else:
-            print("{} Wins the Hand!\n".format(opponent.get_name()))
+            print("{} Wins the WAR!\n".format(opponent.get_name()))
             opponent.add_player_win()
             opponent.add_war_win()
-            opponent.append_cards(computer_war_card)
-            opponent.appemd_cards(opponent_war_card)
-            opponent.append_cards(war_chest)
+            opponent.append_card(computer_war_card)
+            opponent.append_card(opponent_war_card)
+            for card in war_chest:
+                opponent.append_card(card)
 
 # Check the player decks to see if anyone has run out of cards. When either the computer
 #   or the opponent run out of cards the game is over.
@@ -205,11 +215,13 @@ def game_complete():
     computer_remaining_cards = computer.get_remaining_cards()
     opponent_remaining_cards = opponent.get_remaining_cards()
 
+    print("{} cards remaining: {}\tComputer cards remaining: {}\n".format(opponent.get_name(), opponent.get_remaining_cards(), computer.get_remaining_cards()))
+
     if computer_remaining_cards == 0:
-        print("{} Wins the Game!".format(opponent.get_name()))
+        print("{} Wins the Game!\n".format(opponent.get_name()))
 
     if opponent_remaining_cards == 0:
-        print("Computer Wins the Game!")
+        print("Computer Wins the Game!\n")
 
     if computer_remaining_cards == 0 or opponent_remaining_cards == 0:
         return True
@@ -218,9 +230,6 @@ def game_complete():
 
 # Do a hand
 def do_hand():
-    computer_card = []
-    opponent_card = []
-
     computer_card = computer.draw_one()
     opponent_card = opponent.draw_one()
 
@@ -242,13 +251,13 @@ def do_hand():
     elif computer_card_val > opponent_card_val:
         print("Computer Wins the Hand!\n")
         computer.add_player_win()
-        computer.append_cards(computer_card)
-        computer.append_cards(opponent_card)
+        computer.append_card(computer_card)
+        computer.append_card(opponent_card)
     else:
         print("{} Wins the Hand!\n".format(opponent.get_name()))
         opponent.add_player_win()
-        opponent.append_cards(computer_card)
-        opponent.append_cards(opponent_card)
+        opponent.append_card(computer_card)
+        opponent.append_card(opponent_card)
 
 
 # The actual game code starts here
@@ -277,3 +286,11 @@ while keep_going is True:
     do_hand()
     if game_complete():
         keep_going = False
+
+print("{} Statistics:\n".format(opponent.get_name()))
+print("\tHands won:{}".format(opponent.player_wins))
+print("\tWARs won: {}\n".format(opponent.war_wins))
+
+print("Computer Statistics:\n")
+print("\tHands won:{}".format(computer.player_wins))
+print("\tWARs won: {}\n".format(computer.war_wins))
