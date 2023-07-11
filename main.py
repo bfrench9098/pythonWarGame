@@ -21,7 +21,7 @@ class Deck:
         self.generate_deck()
 
         card_count = len(self.DECK)
-        print("Have generated a new deck of {} cards.".format(card_count))
+        print("\nHave generated a new deck of {} cards.".format(card_count))
         # print(self.DECK)
 
         self.shuffle_deck()
@@ -48,6 +48,20 @@ class Deck:
 
     def shuffle_deck(self):
         random.shuffle(self.DECK)
+
+    def draw_one(self):
+        return self.DECK.pop(0)
+
+    def cut_cards(self, card_no):
+        cut_stack = []
+        i = 0
+
+        while i < card_no:
+            cut_stack.append(self.draw_one())
+            i = i + 1
+
+        for card in cut_stack:
+            self.DECK.append(card)
 
 
 # The Player class is used to hold player related information as well as the player's
@@ -264,23 +278,42 @@ def do_hand():
 #
 
 # Generate the initial deck of cards and shuffle the deck
-Deck()
+#Deck()
 
 # globals
 keep_going = True
 
 # Set up the computer player
 computer = Player("Computer", "odd")
-computer.draw_starting_cards()
 
 print("Welcome to WAR!!\n")
 
 # Set up the human opponent
 player_name = input("Enter Your Name:  ")
 opponent = Player(player_name, "even")
-opponent.draw_starting_cards()
 
 print("\nS T A R T I N G    G A M E\n")
+
+cut_cards = input("Do you want to cut the cards?(y/n)")
+
+if cut_cards.lower() == 'y':
+    card_cut_count = input("Enter a value between 5 and 40(Default is 25): \n").strip()
+    if card_cut_count.isnumeric():
+        if int(card_cut_count) < 5 or int(card_cut_count) > 40:
+            card_cut_count = 25
+    else:
+        card_cut_count = 25
+
+    Deck().cut_cards(int(card_cut_count))
+
+    print("Deck has been cut at card {}! Good luck\n".format(card_cut_count))
+else:
+    Deck()
+    print("Cards will not be cut.\n")
+
+# Draw starting cards from Deck.DECK
+computer.draw_starting_cards()
+opponent.draw_starting_cards()
 
 while keep_going is True:
     do_hand()
