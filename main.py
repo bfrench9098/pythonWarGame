@@ -28,6 +28,12 @@ class Deck:
         print("Deck has been shuffled.")
         # print(self.DECK)
 
+    # Create a deck of 52 cards. Each "card" is actually a self-contained dictionary with a string
+    #   representing the card as the dict key and a card value as the dict value. Card values are
+    #   compared to determine which card is higher in rank and wins the hand/WAR
+    #
+    # "DECK" is just a list object with a bunch of card dict objects inside of it.
+    #
     def generate_deck(self):
         suite_val = 0
         rank_val = 0
@@ -46,12 +52,16 @@ class Deck:
 
                 self.DECK.append(card)
 
+    # Use the shuffle method on the random object to shuffle the cards in the deck
     def shuffle_deck(self):
         random.shuffle(self.DECK)
 
+    # Pop one card off the top of the DECK
     def draw_one(self):
         return self.DECK.pop(0)
 
+    # Pop cards off the top of the DECK until the card to cut the deck at is reached. These cards are
+    #   stored in a temporary list and then appended to the back of the DECK
     def cut_cards(self, card_no):
         cut_stack = []
         i = 0
@@ -106,6 +116,7 @@ class Player:
     def add_war_win(self):
         self.war_wins = self.war_wins + 1
 
+    # Return the number of remaining cards in the player's deck
     def get_remaining_cards(self):
         return len(self.player_deck)
 
@@ -113,6 +124,7 @@ class Player:
     def draw_one(self):
         return self.player_deck.pop(0)
 
+    # Draw three cards from the top of the player deck
     def draw_three(self):
         three_cards = []
         i = 0
@@ -123,6 +135,7 @@ class Player:
 
         return three_cards
 
+    # Draw all remaining cards from the player deck
     def draw_remaining(self):
         remaining_cards = []
 
@@ -142,7 +155,15 @@ class Player:
         self.player_deck.append(card)
 
 
-# Do a WAR (recursive method)
+# Do a WAR (recursive method). This method can be called recursively from inside do_war.
+#   This happens if a WAR occurs back to back with one or more other WARs. When
+#   that happens the war chest will build up with all the cards in play and when a
+#   winning hand is reached that player will receive all the cards in the war chest.
+#
+# The existing war chest is empty the first time this method id called and if called
+#   recursively, all cards in the war chest will be sent to each subsequent
+#   recursive call.
+#
 def do_war(computer_card, opponent_card, existing_war_chest = []):
     war_chest = []
 
@@ -278,7 +299,6 @@ def do_hand():
 #
 
 # Generate the initial deck of cards and shuffle the deck
-#Deck()
 
 # globals
 keep_going = True
@@ -294,6 +314,13 @@ opponent = Player(player_name, "even")
 
 print("\nS T A R T I N G    G A M E\n")
 
+# See if the human opponent wants to cut the cards. And cut the cards if requested
+#  at a card number selected by the human opponent. Card to cut the deck at must
+#  be between 5 and 40. The default of 25 cards will be set if the human opponent
+#  enters an invalid number, alfa characters, or an empty string.
+#
+# Something to note, Deck is being called statically here.
+#
 cut_cards = input("Do you want to cut the cards?(y/n)")
 
 if cut_cards.lower() == 'y':
@@ -309,6 +336,7 @@ if cut_cards.lower() == 'y':
     print("Deck has been cut at card {}! Good luck\n".format(card_cut_count))
 else:
     Deck()
+
     print("Cards will not be cut.\n")
 
 # Draw starting cards from Deck.DECK
@@ -320,6 +348,7 @@ while keep_going is True:
     if game_complete():
         keep_going = False
 
+# Print end of game statistics
 print("{} Statistics:\n".format(opponent.get_name()))
 print("\tHands won:{}".format(opponent.player_wins))
 print("\tWARs won: {}\n".format(opponent.war_wins))
