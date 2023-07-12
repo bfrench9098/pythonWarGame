@@ -343,10 +343,8 @@ else:
 computer.draw_starting_cards()
 opponent.draw_starting_cards()
 
-while keep_going is True:
+while game_complete() is False:
     do_hand()
-    if game_complete():
-        keep_going = False
 
 # Print end of game statistics
 print("{} Statistics:\n".format(opponent.get_name()))
